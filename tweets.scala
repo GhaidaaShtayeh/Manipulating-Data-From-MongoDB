@@ -1,4 +1,3 @@
-
 import com.mongodb.MongoClient
 import com.mongodb.client.model
 import com.mongodb.client.model.Filters.{and, geoWithinCenter, gte, lte}
@@ -58,23 +57,22 @@ object RevenueRetrieval {
     // where the timestamp field is to be indexed.
     // AT FIRST : create a user define function to convert the date string to another format
 
-    val Format = udf((created_at: String) => {
+    val ChangeDateFormat = udf((created_at: String) => {
       val simpleDateF = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy")
       val new_date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss")
       val DataAfterFormatted = new_date.format((simpleDateF.parse(created_at)))
-        DataAfterFormatted
+      DataAfterFormatted
     })
     //////////////////////////////////////////////////////////////////////////////////////////////
-
     //add column with new format
-    val col_formatted = Format(col("created_at"))
+    val col_formatted = ChangeDateFormat(col("created_at"))
     var dataDf = data_df.withColumn("created_at", col_formatted)
-
     // convert it to timestamp field
     val _timestamp = to_timestamp(col("created_at"),"MM-dd-yyyy HH:mm:ss")
     dataDf = dataDf.withColumn("created_at",_timestamp)
     MongoSpark.save(dataDf, conf)
     //////////////////////////////////////////////////////////////////////////////////////////////
+
     //Indexing the geo-coordinates of tweets.tweets to ensure a fast spatial-based retrieval
     val mongoClient = new MongoClient("localhost",27017)
     val database = mongoClient.getDatabase("acme")
@@ -84,7 +82,6 @@ object RevenueRetrieval {
 
     println("**********************************************************")
     //////////////////////////////////////////////////////////////////////////////////////////////
-
     //calling all values and variables needed
 
     /*println("Enter radius : ")
@@ -105,23 +102,24 @@ object RevenueRetrieval {
     val End = args(4)
     val w = args(5)
 
-
+    //change the date input format :
     val formatter = new SimpleDateFormat("MM-dd-yyyy")
     val start_date_ = formatter.parse(start)
     val end_date_ = formatter.parse(End)
     println(start_date_,end_date_)
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    //collecting tweets and filtering them spatio-temporally using dataframe apis
     val timeSpaceFilter1 = collection.find (and(gte("created_at", start_date_),lte("created_at", end_date_),
         model.Filters.regex("text",w),
         geoWithinCenter ("coordinates.coordinates",lon,lat, r)))
-
     val timeSpaceFilter = timeSpaceFilter1.toList
 
-
+   ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //calculate the number of occurrences of word
    var counter = 0
-   val word_count = timeSpaceFilter.map(x => x.get("text").toString)
+   val word_count = timeSpaceFilter.map(x => x.getString("text"))
     val word_count2 = word_count.flatMap(x => x.split(" "))
 
     word_count2.foreach( word =>{
