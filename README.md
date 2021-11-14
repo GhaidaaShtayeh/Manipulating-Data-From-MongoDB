@@ -17,8 +17,13 @@ Run the application as follows:
 WordFreqCalculator.scala w r lon lat start end 
 
 w: word to calculte its frequency
+
 r: raduis in meters 
+
 lon: longitude 
+
 lat: latitude 
-start: starting epoc time  
+
+start: starting epoc time 
+
 end: ending epoc time
