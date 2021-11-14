@@ -1,5 +1,5 @@
 # bigDataTweets
-1- read the json-formated tweets in the attached file and use MongoSpark library to insert them into mongoDB database in a collection called 'tweets' 
+* read the json-formated tweets in the attached file and use MongoSpark library to insert them into mongoDB database in a collection called 'tweets' 
 
 2- The timestamp associated with each tweet is to be stored as a Date object, where the timestamp field is to be indexed.
 
