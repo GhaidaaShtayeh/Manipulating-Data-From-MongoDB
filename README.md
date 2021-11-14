@@ -14,6 +14,7 @@ Perform this operation by two ways:
 3- Text indexing is optional 
 
 Run the application as follows: 
+
 WordFreqCalculator.scala w r lon lat start end 
 
 w: word to calculte its frequency
