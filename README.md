@@ -6,8 +6,11 @@
 * Also, the geo-coordinates of tweets should be indexed properly to ensure a fast spatial-based retrieval calculate the number of occurrences of word w published within a circular region of raduis (r), having a central point of (lon, lat), mentioned in tweets published during the time interval (start, end). 
 
 Perform this operation by two ways: 
+
 1- using MongoSpark, by collecting tweets and filtering them spatio-temporally using dataframe apis. 
+
 2- using mongodb library by sending a normal mongoDB query to filter by time and space.
+
 3- Text indexing is optional 
 
 Run the application as follows: 
