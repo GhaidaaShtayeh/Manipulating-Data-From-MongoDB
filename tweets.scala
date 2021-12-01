@@ -6,14 +6,12 @@ import org.apache.log4j.varia.NullAppender
 import org.apache.spark.sql.SparkSession
 import org.mongodb.scala.model.{Filters, Indexes}
 import com.mongodb.casbah.Imports._
-
 import java.text.SimpleDateFormat
 import scala.Console.println
 import com.mongodb.casbah.query.dsl
 import com.mongodb.spark.MongoSpark
 import com.mongodb.spark.config.WriteConfig
 import org.apache.spark.sql.catalyst.dsl.expressions.StringToAttributeConversionHelper
-
 import scala.collection.convert.ImplicitConversions.{`iterable AsScalaIterable`, `seq AsJavaList`}
 import org.apache.spark.sql.functions.{col, to_timestamp, udf}
 object RevenueRetrieval {
